@@ -1,7 +1,11 @@
+#Make sure you create a file called ips.txt with all the IPs you want to lookup
+#and place it in the same directory as this script
+#we will call this file to lookup hostnames
+
 #for loop through IP list
-#	run ns lookup
-#	append to file
-#	end when list is empty
+#run ns lookup
+#append to file
+#end when list is empty
 
 #import socket module
 import socket
@@ -22,9 +26,6 @@ def get_hostname(file):
 			e.write(name_only)
 			e.write("\n")
 			e.close()
-	#		print name_only
-# return the hostname and print it out
-	#return name_only
 
 # set ips.txt document to files variable. ips.txt is the file
 # housing the IPs i want to reslove the hostnames for
@@ -32,5 +33,5 @@ files = 'ips.txt'
 
 #call get_hostname function with files variable
 hosts = get_hostname(files)
-#print hosts
+#could add a line here to print hostnames
 
