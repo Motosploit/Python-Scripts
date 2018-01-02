@@ -4,4 +4,4 @@ IP_Lookup.py - Runs nslookup on list of IPs in file and dumps hostnames into a f
 
 Hostname_Loopup.py - Runs nslookup on list of Hostnames in file and dumps ips into a file
 
-SSLScan_with_File_Creation.py - Runs a sslscan then creates a registry file for windows machines to disable weak protocols
+SSLScan_with_File_Creation.py - Runs a sslscan for weak ciphers then creates a registry file for windows machines to disable weak protocols
