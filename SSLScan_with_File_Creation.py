@@ -59,10 +59,13 @@ def generate_protocol_reg_keys(sslscan_output):
 	f = open("/tmp/ciphers.reg", 'w')
 	f.write("Windows Registry Editor Version 5.00\n")
 	f.close
+#set match variable to False
+	match = False
 	
 	if "SSLv2" in sslscan_output:
 	#create registry key to disable SSLv2
 		print "SSLv2 Found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0]\n
@@ -77,6 +80,7 @@ def generate_protocol_reg_keys(sslscan_output):
 	if "SSLv3" in sslscan_output:
 	#create registry key to disable SSLv3
 		print "SSLv3 Found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0]\n
@@ -91,6 +95,7 @@ def generate_protocol_reg_keys(sslscan_output):
 	if "TLSv1.0" in sslscan_output:
 	#create registry key to disable TLSv1.0
 		print "TLSv1.0 Found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0]\n
@@ -105,6 +110,7 @@ def generate_protocol_reg_keys(sslscan_output):
 	if "TLSv1.1" in sslscan_output:
 	#create registry key to disable TLSv1.1
 		print "TLSv1.1 Found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1]\n
@@ -116,16 +122,20 @@ def generate_protocol_reg_keys(sslscan_output):
 		"DisabledByDefault"=dword:00000001\n''')
 		f.close
 	
-	else:
+	if match == False:
 		print "No Weak Protocols Found"
 
 #Identify specific ciphers to disable under TLSv1.2		
 def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 
+#set match to False
+	match = False
+
 #identify ciphers running 1024bits or less DHE
-	if re.finditer(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DHE (([0-9][0-9]|[0-9][0-9][0-9]|10[0-2][0-4])\s+)bits", sslscan_output):
+	if re.search(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DHE (([0-9][0-9]|[0-9][0-9][0-9]|10[0-2][0-4])\s+)bits", sslscan_output):
 		#create registry key to disable key lengths of 1024 and less
 		print "TLSv1.2 with DHE key length of 1024 or less found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\Diffie-Hellman]
@@ -133,9 +143,10 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 		f.close
 
 		#identify ciphers running DES
-	if re.finditer(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DES", sslscan_output):
+	if re.search(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DES", sslscan_output):
 		#create registry key to disable DES
 		print "TLSv1.2 with DES found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\DES 56/56]
@@ -143,9 +154,10 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 		f.close
 		
 		#identify ciphers running Triple DES
-	if re.finditer(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DES-CBC3", sslscan_output):
+	if re.search(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)DES-CBC3", sslscan_output):
 		#create registry key to disable Triple DES
 		print "TLSv1.2 with Triple DES found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168]
@@ -153,9 +165,10 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 		f.close
 	
 		#identify ciphers running RC4
-	if re.finditer(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)RC4", sslscan_output):
+	if re.search(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)RC4", sslscan_output):
 		#create registry key to RC4
 		print "TLSv1.2 with RC4 found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 128/128]
@@ -167,9 +180,10 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 		f.close
 	
 		#identify ciphers running MD5
-	if re.finditer(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)MD5", sslscan_output):
+	if re.search(r"TLSv1\.2([a-zA-Z0-9\[\^\s\-]+)MD5", sslscan_output):
 		#create registry key to MD5
 		print "TLSv1.2 with MD5 found"
+		match = True
 		f = open("/tmp/ciphers.reg", 'a')
 		f.write('''[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes]\n
 		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\MD5]
@@ -177,7 +191,8 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 		f.close
 		
 		#add sha1 (might need a non match so it doesnt include sha256 etc)
-	else:
+
+	if match == False:
 		print "No Weak Ciphers Found"
 
 
