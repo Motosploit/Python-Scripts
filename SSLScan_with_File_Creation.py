@@ -22,11 +22,10 @@ def main():
 		print """Thanks for using the sslscan registry key generator. This script runs sslscan
 		then generates registry keys to disable weak protocols in windows machines.
 		Version 1: Generates keys to disable the SSLv2, SSLv3, TLSv1.0 and TLSv1.1, feel free to adjust the script to suit your needs\n
-		Author:
-			Written by Ben Sondgeroth <motosploit@gmail.com> Twitter: @MotoSploit
+		Author: Written by Ben Sondgeroth <motosploit@gmail.com> Twitter: @MotoSploit
 
 		sslscan Authors:
-			   originally written by Ian Ventura-Whiting <fizz@titania.co.uk>.
+				originally written by Ian Ventura-Whiting <fizz@titania.co.uk>.
 			   extended by Jacob Appelbaum <jacob@appelbaum.net>.
 			   extended by rbsec <robin@rbsec.net>.
 		 """
