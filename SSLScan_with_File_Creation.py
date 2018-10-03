@@ -10,17 +10,39 @@ import subprocess
 import sys
 import re
 
-print """Thanks for using the sslscan registry key generator. This script runs sslscan
-then generates registry keys to disable weak protocols in windows machines.
-Version 1: Generates keys to disable the SSLv2, SSLv3, TLSv1.0 and TLSv1.1, feel free to adjust the script to suit your needs\n
-Author:
-	Written by Ben Sondgeroth <motosploit@gmail.com> Twitter: @MotoSploit
 
-sslscan Authors:
-       originally written by Ian Ventura-Whiting <fizz@titania.co.uk>.
-       extended by Jacob Appelbaum <jacob@appelbaum.net>.
-       extended by rbsec <robin@rbsec.net>.
- """
+ 
+
+def main():
+	#global host
+	#no fancy command line parsing here
+	#check for argument values and there are at least 2 arguments
+	if len(sys.argv[1:]) != 1:
+		# print out examples of usage
+		print """Thanks for using the sslscan registry key generator. This script runs sslscan
+		then generates registry keys to disable weak protocols in windows machines.
+		Version 1: Generates keys to disable the SSLv2, SSLv3, TLSv1.0 and TLSv1.1, feel free to adjust the script to suit your needs\n
+		Author:
+			Written by Ben Sondgeroth <motosploit@gmail.com> Twitter: @MotoSploit
+
+		sslscan Authors:
+			   originally written by Ian Ventura-Whiting <fizz@titania.co.uk>.
+			   extended by Jacob Appelbaum <jacob@appelbaum.net>.
+			   extended by rbsec <robin@rbsec.net>.
+		 """
+		print "Usage: ./SSLScan_with_File_Creation.py [host:port]"
+		sys.exit(0)
+	else:
+		#setup parameters
+		host = sys.argv[1]
+		#port = int(sys.argv[2])
+		sslscanner(host)
+		scrub_output(output)
+		generate_protocol_reg_keys(scrubbed_output)
+		generate_weak_cipher_reg_keys_for_strong_protocols(scrubbed_output)
+		print "Registry key file created under /tmp/ciphers.reg"
+	
+
 #set host to be input of user and check it is valid
 def set_host():
 #set host as global variable
@@ -194,15 +216,5 @@ def generate_weak_cipher_reg_keys_for_strong_protocols(sslscan_output):
 
 	if match == False:
 		print "No Weak Ciphers Found"
-
-
-		
-def main():
-	set_host()
-	sslscanner(host)
-	scrub_output(output)
-	generate_protocol_reg_keys(scrubbed_output)
-	generate_weak_cipher_reg_keys_for_strong_protocols(scrubbed_output)
-	print "Registry key file created under /tmp/ciphers.reg"
 
 main()
