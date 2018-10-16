@@ -10,16 +10,11 @@ import subprocess
 import sys
 import re
 
+end = '\033[1;m'
+green = '\033[1;32m'
 
- 
-
-def main():
-	#global host
-	#no fancy command line parsing here
-	#check for argument values and there are at least 2 arguments
-	if len(sys.argv[1:]) != 1:
-		# print out examples of usage
-		print """Thanks for using the sslscan registry key generator. This script runs sslscan
+print """%s
+		Thanks for using the sslscan registry key generator. This script runs sslscan
 		then generates registry keys to disable weak protocols in windows machines.
 		Version 1: Generates keys to disable the SSLv2, SSLv3, TLSv1.0 and TLSv1.1, feel free to adjust the script to suit your needs\n
 		Author: Written by Ben Sondgeroth <motosploit@gmail.com> Twitter: @MotoSploit
@@ -28,7 +23,15 @@ def main():
 				originally written by Ian Ventura-Whiting <fizz@titania.co.uk>.
 			   extended by Jacob Appelbaum <jacob@appelbaum.net>.
 			   extended by rbsec <robin@rbsec.net>.
-		 """
+		%s""" % (green, end)
+print "Usage: ./SSLScan_with_File_Creation.py [host:port]"
+
+def main():
+	#global host
+	#no fancy command line parsing here
+	#check for argument values and there are at least 2 arguments
+	if len(sys.argv[1:]) != 1:
+		# print out examples of usage
 		print "Usage: ./SSLScan_with_File_Creation.py [host:port]"
 		sys.exit(0)
 	else:
