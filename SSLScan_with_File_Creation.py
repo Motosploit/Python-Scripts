@@ -29,10 +29,10 @@ print "Usage: ./SSLScan_with_File_Creation.py [host:port]"
 def main():
 	#global host
 	#no fancy command line parsing here
-	#check for argument values and there are at least 2 arguments
+	#check for argument values and that there are 2 arguments
 	if len(sys.argv[1:]) != 1:
 		# print out examples of usage
-		print "Usage: ./SSLScan_with_File_Creation.py [host:port]"
+		print "Provided hostname and port please."
 		sys.exit(0)
 	else:
 		#setup parameters
