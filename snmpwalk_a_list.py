@@ -3,7 +3,7 @@
 # must have snmpwalk installed on host system
 # Output data to new file
 # Repeat till end of file
-# future goal, make my own snmpwalk python script removing dependency on snmpwalk
+# ToDo: make my own snmpwalk python script removing dependency on snmpwalk
 import subprocess
 import sys
 import os.path
